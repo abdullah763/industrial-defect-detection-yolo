@@ -218,3 +218,21 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+
+# Industrial Defect Detection Project
+
+# Dataset files
+data/
+
+# Model weights
+*.pt
+*.pth
+*.onnx
+
+# Generated experiment outputs
+runs/
+outputs/
+
+# macOS files
+.DS_Store
