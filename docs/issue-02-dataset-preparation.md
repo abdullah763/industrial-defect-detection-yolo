@@ -100,3 +100,17 @@ python -m scripts.finish_issue2 --build
 5. Compare first measured baseline against the planned primary mAP@0.5:0.95 and supporting per-class metrics; don't invent benchmark results.
 
 **Planning note:** This derived split policy supersedes the original Issue #1 experiment plan's use of the original validation split for routine model selection. The original validation images are now final held-out test images.
+
+## Final reproducibility verification — October 27, 2026
+
+- Frozen split manifest: `manifests/neu_det_yolo_split_v1.json`.
+- Fixed random seed: 42.
+- Independently regenerated the dataset from unchanged raw inputs.
+- Original and regenerated split manifests matched exactly.
+- SHA-256 comparisons confirmed identical bytes for all 1,799 images and 1,799 YOLO label files.
+- Final splits: 1,151 train, 288 validation, 360 held-out test.
+- Object reconciliation: 4,186 retained, 3 excluded, 0 rejected.
+- Reviewed 20 prioritized train-test similarity pairs using five four-pair grids.
+- No obvious additional duplicates were identified in the reviewed pairs.
+- Near-duplicate screening remains heuristic; residual leakage risk is acknowledged.
+- Raw dataset remains unchanged.
