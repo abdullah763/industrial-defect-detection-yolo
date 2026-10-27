@@ -1,7 +1,7 @@
 """Review cross-split image similarity; safely export verified VOC -> YOLO dataset.
 
-Run from repository root: python -m scripts.finish_issue2 --preflight
-After review:          python -m scripts.finish_issue2 --build
+Run from repository root: python -m scripts.build_yolo_dataset --preflight
+After review:          python -m scripts.build_yolo_dataset --build
 This never changes data/raw. See --help for explicit exclusions.
 """
 from __future__ import annotations

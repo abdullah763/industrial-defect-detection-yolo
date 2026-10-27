@@ -42,10 +42,10 @@ Audit reports and contact sheets are saved in `outputs/inspection/`, which is ex
 
 ## Preliminary local findings (October 2026)
 
-The inspected local copy contains 1,440 training images and 360 validation images. A cross-split pairing anomaly was identified: `crazing_240.jpg` is in training, while `crazing_240.xml` is in validation. The file's annotations visually appear compatible, but raw files must remain unchanged until the data preparation plan is agreed.
+The inspected local copy contains 1,440 training images and 360 validation images. A cross-split pairing anomaly was identified: `crazing_240.jpg` is in training, while `crazing_240.xml` is in validation. The file's annotations visually appear compatible, but raw files must remain unchanged throughout derived dataset preparation.
 
 Object labels may differ from image folder names; for example, `crazing_104.xml` includes a `patches` object. Always use individual XML object labels for object-detection training. A separate filename audit identified 174 XML `<filename>` values lacking the `.jpg` extension; these are metadata-format differences, not different basenames. Re-run the consolidated audit to verify those counts with the current code.
 
 ## Project scope
 
-The dataset inspection scripts support the first project issue. Model configuration, experiments, training, and evaluation will be added in later milestones.
+Issues #1 and #2 cover dataset inspection and reproducible YOLO preparation. Training and evaluation follow in later milestones.

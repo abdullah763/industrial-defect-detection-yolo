@@ -6,11 +6,11 @@
 
 **Completed local review:** October 27, 2026
 
-**Status:** Local preparation and validation completed; GitHub commit/Technical Lead acceptance pending.
+**Status:** Preparation and deterministic regeneration verified; final Technical Lead approval pending.
 
 ## Objective and source data
 
-Convert NEU-DET Pascal VOC XML annotations into six-class YOLO detection labels and establish reproducible, leakage-conscious train/validation/test partitions. Keep `data/raw/NEU-DET` unchanged. All derived images, labels, reports, and manifests are local artifacts under `data/processed/NEU-DET-YOLO` and `outputs/inspection/issue-02`.
+Convert NEU-DET Pascal VOC XML annotations into six-class YOLO detection labels and establish reproducible, leakage-conscious train/validation/test partitions. Keep `data/raw/NEU-DET` unchanged. Derived data and inspection outputs remain local; the portable frozen manifest is tracked in `manifests/`.
 
 Original source data:
 
@@ -85,8 +85,8 @@ From the repository root, with the raw dataset in the expected location and depe
 
 ```bash
 python -m unittest discover -s tests -v
-python -m scripts.finish_issue2 --preflight
-python -m scripts.finish_issue2 --build
+python -m scripts.build_yolo_dataset --preflight
+python -m scripts.build_yolo_dataset --build
 ```
 
 **Important:** The build intentionally refuses to overwrite an existing `data/processed/NEU-DET-YOLO` directory. Recreating output must be an explicit, controlled decision; never run cleanup commands against `data/raw`.

@@ -5,13 +5,13 @@ from pathlib import Path
 import numpy as np
 from PIL import Image
 
-from scripts.finish_issue2 import (
+from scripts.build_yolo_dataset import (
     compare_vectors, priority_review, validate_yolo_line,
     load_exclusions, export_dataset, make_yaml,
 )
 
 
-class FinishIssue2Tests(unittest.TestCase):
+class BuildYoloDatasetTests(unittest.TestCase):
     def test_similarity_identical_and_opposite(self):
         a = np.arange(64, dtype=np.float32)
         mae, corr = compare_vectors(a, a.copy())

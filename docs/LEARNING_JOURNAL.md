@@ -95,7 +95,7 @@ Prepare a reproducible six-class YOLO dataset without changing the original NEU-
 - Raw NEU-DET contained one exact duplicate pair with slightly inconsistent annotations and many broad perceptual-hash matches. Avoided blanket deletion or interpreting every candidate as a duplicate.
 
 ### Engineering Decisions
-- Preserve `data/raw` and keep derived images, manifest, and similarity CSV out of Git.
+- Preserve `data/raw` and keep derived images and similarity CSV local, but track the portable frozen manifest in Git.
 - Use the XML object's true label rather than the image folder to label every box.
 - Preserve original validation images as untouched **test**, splitting only the original training images into training and validation with seed 42.
 - Make duplicate and cross-split decisions explicit and logged; fail rather than silently overwrite ambiguous identities or discard invalid annotations.
@@ -115,3 +115,25 @@ Confirm the training-environment path in `data.yaml`; perform a light YOLO datas
 
 ### Time Spent
 Not tracked precisely; no estimate recorded.
+
+### Issue #2 — Learning Reflection (October 27, 2026)
+
+**Concepts already learned and applied:**
+- Python `unittest`: Implemented synthetic unit tests, assertions, failure cases, and test discovery. All 27 tests passed.
+- SHA-256: Used file-content hashing to identify byte-identical dataset images.
+- dHash and Hamming distance: Applied perceptual similarity screening and investigated false-positive candidates.
+- MAE and correlation: Used pixel-level similarity measurements alongside manual image review.
+- Python engineering: Practiced `pathlib.Path`, dictionaries, lists, XML/JSON processing, exceptions, and command-line execution.
+- Dataset reproducibility: Implemented seed-42 splitting, duplicate handling, manifest freezing, and deterministic regeneration.
+- VOC-to-YOLO conversion: Implemented coordinate normalization, class mapping, and annotation validation.
+- Data leakage: Learned why training, validation, and held-out testing must remain separated.
+
+**Next learning goal — deeper revision:**
+These concepts have already been studied and used in the project. My next goal is to strengthen independent implementation, mathematical intuition, debugging, edge-case reasoning, and interview explanations through small practice exercises. This is revision of existing knowledge, not first-time learning.
+
+**Final engineering verification:**
+- 27 automated tests passed.
+- Original and regenerated manifests matched.
+- All 1,799 image files and 1,799 YOLO label files matched by SHA-256.
+- Reviewed 20 prioritized train-test image comparisons.
+- Raw data remained unchanged.
