@@ -67,3 +67,51 @@ Understand the NEU-DET industrial surface defect dataset, verify the reliability
 - Both sample contact sheets were generated; the terminal verified file creation, but a final manual visual inspection should be confirmed separately.
 - Inspection code and Issue #1 documentation have been pushed to `main`; the latest user-provided `git status` was clean and synchronized with `origin/main`.
 - No trained YOLO model or measured validation mAP exists yet; those belong to later issues.
+
+---
+
+## Day 2 — October 27, 2026 — Issue #2
+
+**GitHub Issue:** [#2 — Prepare dataset and validate train/val/test splits](https://github.com/abdullah763/industrial-defect-detection-yolo/issues/2)
+
+### Goal
+Prepare a reproducible six-class YOLO dataset without changing the original NEU-DET source files, validate it, and prevent known data leakage.
+
+### Work Completed
+- Practiced VOC pixel-to-YOLO normalized box conversion on paper and in `scratch/voc_to_yolo_practice.py`, including positive-area and image-boundary validation.
+- Parsed actual XML objects, converted all per-object class names to IDs 0–5, and verified mixed-class `crazing_104.xml` output.
+- Added production VOC conversion, image/XML identity matching, SHA-256 duplicate checks, controlled duplicate resolution, fixed-seed dataset splitting, cross-split dHash screening, synthetic tests, and final export/integrity verification.
+- Detected a misplaced `crazing_240.xml` and retained training membership based on the image; raw data stayed unchanged.
+- Detected identical image bytes for `patches_101` and `patches_105`, observed slightly different boxes, and excluded `patches_105` from derived data only.
+- Generated **1,799 YOLO images**, with **1,151 train / 288 val / 360 held-out test**, and reconciled **4,186 retained + 3 excluded + 0 rejected = 4,189 original objects**.
+- Reviewed cross-split near-duplicate screening (1,156 dHash candidates, zero strict-heuristic priority flags) and manually reviewed generated six-class YOLO overlays for each split (18 displayed examples total).
+- Ran the complete automated test suite: **27/27 passed** after a portability fix to the macOS path assertion.
+
+### Problems and Debugging
+- Forgot to save a Python file before running tests, causing an import error; saving and rerunning resolved it.
+- An initially empty test file reported `Ran 0 tests — OK`; adding the tests made test discovery meaningful.
+- A misplaced indentation block repeated duplicate resolution inside a loop; moved it outside the loop and returned selected images explicitly.
+- A synthetic export test compared `/var` against `/private/var` on macOS; comparing resolved paths fixed the assertion.
+- Raw NEU-DET contained one exact duplicate pair with slightly inconsistent annotations and many broad perceptual-hash matches. Avoided blanket deletion or interpreting every candidate as a duplicate.
+
+### Engineering Decisions
+- Preserve `data/raw` and keep derived images, manifest, and similarity CSV out of Git.
+- Use the XML object's true label rather than the image folder to label every box.
+- Preserve original validation images as untouched **test**, splitting only the original training images into training and validation with seed 42.
+- Make duplicate and cross-split decisions explicit and logged; fail rather than silently overwrite ambiguous identities or discard invalid annotations.
+- Defer deeper exercises on `unittest`, SHA-256, perceptual hashing, Python collection operations, and error handling until after Issue #2 is shipped.
+
+### What I Can Explain Now
+- VOC `(xmin, ymin, xmax, ymax)` to YOLO `class_id x_center y_center width height` normalization.
+- Why duplicate filenames and duplicate file content require different checks.
+- Why training/validation leakage and repeatedly tuning on a held-out test set undermine evaluation.
+- Why automated tests must execute actual test cases, not just finish with `OK`.
+
+### Follow-Up Learning
+Review `unittest` structure and assertions, temporary directories, hashing and Hamming distance, file/path handling, reproducible random splits, and interpretation of class-level counts using small independent examples.
+
+### Issue #3 First Action
+Confirm the training-environment path in `data.yaml`; perform a light YOLO dataset/model-loading smoke test without evaluating or tuning on the held-out test set.
+
+### Time Spent
+Not tracked precisely; no estimate recorded.
